@@ -48,4 +48,12 @@ public class StudentDB {
                "students=" + students +
                '}';
     }
+
+    public Student findById(String id) throws StudentNotFoundException {
+        Student foundStudent = this.students.get(id);
+        if (foundStudent == null) {
+            throw new StudentNotFoundException("Could not find student with id: " + id);
+        }
+        return foundStudent;
+    }
 }
