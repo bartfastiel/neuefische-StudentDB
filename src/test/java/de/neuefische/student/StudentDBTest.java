@@ -3,6 +3,8 @@ package de.neuefische.student;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 class StudentDBTest {
 
     @Test
@@ -79,4 +81,33 @@ class StudentDBTest {
         //THEN
         Assertions.assertThat(actual).containsExactly(expected);
     }
+
+    @Test
+    void getStudent_WhenCallingFindByIdInADBWithOneStudent() throws StudentNotFoundException {
+        Student jan = new Student("1","Jan");
+        Student[] students = {jan};
+        StudentDB studentDB = new StudentDB(students);
+
+        Student actual = studentDB.findById("1");
+
+        Student expected = jan;
+        Assertions.assertThat(actual).isEqualTo(expected);
+
+    }
+
+    @Test
+    void expectException_WhenCallingFindByIdInAnEmptyDb() {
+        StudentDB studentDB = new StudentDB();
+
+        try {
+            studentDB.findById("1");
+            fail("The expected StudentNotFoundException was not thrown! Even though the student was not in the db!");
+        } catch (StudentNotFoundException e) {
+            // everything fine: the expected exception occurred
+            // Hooray!
+            Assertions.assertThat(e.getMessage())
+                    .isEqualTo("Could not find student with id: 1");
+        }
+    }
+
 }
