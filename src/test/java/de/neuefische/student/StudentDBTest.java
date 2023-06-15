@@ -1,6 +1,6 @@
 package de.neuefische.student;
 
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class StudentDBTest {
@@ -19,7 +19,7 @@ class StudentDBTest {
         Student[] actual = studentDB.getAllStudents();
 
         //THEN
-        Assertions.assertArrayEquals(students,actual);
+        Assertions.assertThat(actual).containsExactlyInAnyOrder(students);
     }
 
     @Test
@@ -30,13 +30,13 @@ class StudentDBTest {
         Student topi = new Student("3","Topi");
         Student[] students = {jan,topi,tommy};
 
-        String expected = "StudentDB{students=[Student{id='1', name='Jan'}, Student{id='3', name='Topi'}, Student{id='2', name='Tommy'}]}";
+        String expected = "StudentDB{students={1=Student{id='1', name='Jan'}, 2=Student{id='2', name='Tommy'}, 3=Student{id='3', name='Topi'}}}";
         StudentDB studentDB = new StudentDB(students);
         //WHEN
         String actual = studentDB.toString();
 
         //Then
-        Assertions.assertEquals(expected,actual);
+        Assertions.assertThat(actual).isEqualTo(expected);
 
     }
 
@@ -56,7 +56,7 @@ class StudentDBTest {
         Student[] actual = studentDB.addStudent(tommy);
 
         //THEN
-        Assertions.assertArrayEquals(expected,actual);
+        Assertions.assertThat(actual).contains(expected);
     }
 
     @Test
@@ -77,6 +77,6 @@ class StudentDBTest {
 
         System.out.println(studentDB);
         //THEN
-        Assertions.assertArrayEquals(expected,actual);
+        Assertions.assertThat(actual).containsExactly(expected);
     }
 }
